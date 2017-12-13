@@ -4,3 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.modal-container {
+  position: relative;
+}
+.modal-container .modal, .modal-container .modal-backdrop {
+  position: absolute;
+}
+

@@ -5,10 +5,11 @@ const FbLogin = (props) => {
     return(
         <FacebookLogin
             appId="1366238783499175"
-            autoLoad={true}
+            autoLoad={false}
             fields="name,email,picture"
             callback={props.getPersonFbData}
             cssClass="btn btn-primary"
+            textButton=" Log in with Facebook"
             icon="fa-facebook"
       />
     );

@@ -4,7 +4,7 @@ import update from 'immutability-helper';
 import { Elevator } from './components/garage';
 import { Grid, Col, Row } from 'react-bootstrap';
 import CustomPanel from './components/customPanel';
-import FbLogin from './components/fbLogin';
+import LoginModal from './components/fbLoginModal';
 
 class App extends Component {
     constructor() {
@@ -164,15 +164,21 @@ class App extends Component {
 
     render(){
         const { parkingSpaces } = this.state;
+        const loginContent = (
+            <Row>
+                <Col md={12}>
+                    <LoginModal getPersonFbData={this.getPersonFbData}/>
+                </Col>
+            </Row>
+        );
         return(
             <CustomPanel header={"Parking System"} bsStyle="primary">
                 <Grid>
-                    <Row>
-                        <Col md={12}>
-                            <FbLogin getPersonFbData={this.getPersonFbData}/>
-                        </Col>
-                    </Row>
-                    { 
+                    {
+                    !this.state.loggedInPerson
+                    ?
+                    loginContent 
+                    :
                     parkingSpaces.map( (parkingSpace, index) => {
                         return(
                             <Col md={4} key={index}>
