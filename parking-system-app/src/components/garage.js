@@ -9,6 +9,7 @@ const ParkingSpace = (props) => {
         elevatorNumber,
         person
     } = props;
+
     return(
         <Panel header={props.free ? "Available for parking!" : "Taken by: " + person.name} bsStyle={props.free ? "primary" : "danger"}>
             <Row>
@@ -33,10 +34,12 @@ const ParkingSpace = (props) => {
                         <Col md={12}>
                             {
                             (props.free) ?
-                                <Button bsStyle="success" 
-                                    onClick={() => takeParkingSpace(elevatorNumber)}>
-                                    Park here! <Glyphicon glyph="log-in" />
-                                </Button>
+                                <div>
+                                    <Button bsStyle="success" 
+                                        onClick={() => takeParkingSpace(elevatorNumber)}>
+                                        Park here! <Glyphicon glyph="log-in" />
+                                    </Button>
+                                </div>
                                 :
                                 <Button bsStyle="danger" 
                                     onClick={
@@ -64,7 +67,8 @@ const singleSpace = (props) => {
                     takeParkingSpace={props.takeParkingSpace}
                     leaveParkingSpace={props.leaveParkingSpace}
                     elevatorNumber={props.id}
-                    person={props.upperSpace.person}/>
+                    person={props.upperSpace.person}
+                    getPersonFbData={props.getPersonFbData}/>
             </Col>
         </Row>
     );
@@ -79,7 +83,8 @@ const doubleSpace = (props) => {
                     leaveParkingSpace={props.leaveParkingSpace}
                     elevatorNumber={props.id}
                     upperElevator={true}
-                    person={props.upperSpace.person}/>
+                    person={props.upperSpace.person}
+                    getPersonFbData={props.getPersonFbData}/>
             </Col>
             <Col md={12}>
                 <hr />
@@ -90,7 +95,8 @@ const doubleSpace = (props) => {
                     leaveParkingSpace={props.leaveParkingSpace}
                     elevatorNumber={props.id}
                     upperElevator={false}
-                    person={props.lowerSpace.person}/>
+                    person={props.lowerSpace.person}
+                    getPersonFbData={props.getPersonFbData}/>
             </Col>
         </Row>
     );
