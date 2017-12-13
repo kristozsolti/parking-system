@@ -4,12 +4,3 @@ body {
   font-family: sans-serif;
 }
 
-.elevator {
-  border: 1px solid #ddd;
-  border-radius: 10px; 
-}
-
-.elevator-number {
-  border: 1px solid #ddd;
-  border-radius: 10px; 
-}

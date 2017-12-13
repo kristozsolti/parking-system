@@ -26,6 +26,10 @@ class App extends Component {
                     name: "Erica Mathias",
                     email: "mathiase@example.com",
                     pictureUrl: "https://www.shareicon.net/download/2016/08/18/813793_people_512x512.png"
+                },{
+                    name: "Lucas Beardman",
+                    email: "bman@example.com",
+                    pictureUrl: "https://www.shareicon.net/download/2016/07/26/802011_man_512x512.png"
             }]
         }
     }
@@ -66,13 +70,13 @@ class App extends Component {
 
     //Used to get a person's name, email and picture will be implemented later
     getPersonData = () => {
-        const randomNumber = Math.floor(Math.random() * 4);
+        const randomNumber = Math.floor(Math.random() * 5);
         return(
             this.state.examplePersons[randomNumber]
         );
     }
 
-    takeParkingSpace(elevatorNumber) {
+    takeParkingSpace = (elevatorNumber) => {
         this.getPersonData();
         const elevatorIndex = elevatorNumber-1;
         const currentStateOfParkings = this.state.parkingSpaces;
@@ -89,7 +93,7 @@ class App extends Component {
         this.setState({parkingSpaces: newStateOfParkings});
     }
 
-    leaveParkingSpace(elevatorNumber, upperElevator) {        
+    leaveParkingSpace = (elevatorNumber, upperElevator) => {        
         const elevatorIndex = elevatorNumber - 1;
         const currentStateOfParkings = this.state.parkingSpaces;
         let newStateOfParkings;
@@ -140,8 +144,8 @@ class App extends Component {
                             <Elevator key={parkingSpace.id} 
                                 parkingSpaceNumber={parkingSpace.id} 
                                 {...parkingSpace}
-                                takeParkingSpace={this.takeParkingSpace.bind(this)}
-                                leaveParkingSpace={this.leaveParkingSpace.bind(this)}
+                                takeParkingSpace={this.takeParkingSpace}
+                                leaveParkingSpace={this.leaveParkingSpace}
                             />
                         </Col>
                     );
