@@ -8,7 +8,25 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
-            parkingSpaces: []
+            parkingSpaces: [],
+            examplePersons: [
+                {
+                    name: "John Smith",
+                    email: "johnsmith@example.com",
+                    pictureUrl: "https://www.shareicon.net/download/2016/09/01/822711_user_512x512.png"
+                },{
+                    name: "Json Statham",
+                    email: "jsonrocks@example.com",
+                    pictureUrl: "https://www.shareicon.net/download/2016/05/26/771189_man_512x512.png"
+                },{
+                    name: "Mona Lisa",
+                    email: "lisam@example.com",
+                    pictureUrl: "https://cdn4.iconfinder.com/data/icons/business-conceptual-part1-1/513/business-woman-512.png"
+                },{
+                    name: "Erica Mathias",
+                    email: "mathiase@example.com",
+                    pictureUrl: "https://www.shareicon.net/download/2016/08/18/813793_people_512x512.png"
+            }]
         }
     }
 
@@ -46,17 +64,26 @@ class App extends Component {
         this.setInitialStatus(9);
     }
 
+    //Used to get a person's name, email and picture will be implemented later
+    getPersonData = () => {
+        const randomNumber = Math.floor(Math.random() * 4);
+        return(
+            this.state.examplePersons[randomNumber]
+        );
+    }
+
     takeParkingSpace(elevatorNumber) {
+        this.getPersonData();
         const elevatorIndex = elevatorNumber-1;
         const currentStateOfParkings = this.state.parkingSpaces;
         const newStateOfParkings =  currentStateOfParkings[elevatorIndex].upperSpace.free ? 
                                     update(currentStateOfParkings, {[elevatorIndex]: {upperSpace: {
                                         free: {$set: false},
-                                        person: {name:{$set: "Mr. AAA Aaa"}}
+                                        person: {$set: this.getPersonData()}
                                     }}}) :
                                     update(currentStateOfParkings, {[elevatorIndex]: {lowerSpace: {
                                         free: {$set: false},
-                                        person: {name:{$set: "Mr. BBB Bbb"}}
+                                        person: {$set: this.getPersonData()}
                                     }}});
 
         this.setState({parkingSpaces: newStateOfParkings});
@@ -82,7 +109,7 @@ class App extends Component {
             newStateOfParkings =  update(currentStateOfParkings, {[elevatorIndex]: {
                 upperSpace:{
                     free: {$set: false},
-                    person: {$set: ""}
+                    //person: {$set: currentStateOfParkings[elevatorIndex].upperSpace.person}
                 },
                 lowerSpace: {
                     free: {$set: true},

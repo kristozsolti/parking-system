@@ -17,13 +17,14 @@ const ParkingSpace = (props) => {
                             (props.free) ?
                                 (<Image src="https://www.abm.com/aviation/wp-content/uploads/sites/52/2016/03/Aviation_Airport_Parking_Icons_Frame6a-1.png" alt="parking space photo" width="25%" circle />)
                                 :
-                                (<Image src="http://icons.iconarchive.com/icons/icons-land/vista-elements/256/Cancel-2-icon.png" alt="parking space photo" width="25%" circle />)                            
+                                (<Image src={person.pictureUrl} alt="parking space photo" width="25%" circle />)                            
                         }
                     </Col>
                 </Row>
                 <Row>
                     <Col md={12}>
                         <h3><Label bsStyle="primary">{person.name}</Label></h3>
+                        <h5><Label bsStyle="primary">{person.email}</Label></h5>
                     </Col>
                 </Row>
                 <Row>
