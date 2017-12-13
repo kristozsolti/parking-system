@@ -137,7 +137,7 @@ class App extends Component {
     render(){
         const { parkingSpaces } = this.state;
         return(
-            <CustomPanel header={"Parking System"}>
+            <CustomPanel header={"Parking System"} bsStyle="primary">
                 <Grid>
                     { 
                     parkingSpaces.map( (parkingSpace, index) => {

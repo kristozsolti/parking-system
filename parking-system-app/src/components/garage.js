@@ -10,7 +10,7 @@ const ParkingSpace = (props) => {
         person
     } = props;
     return(
-        <Panel header={props.free ? "Available for parking!" : "Taken by: " + person.name} bsStyle={props.free ? "success" : "danger"}>
+        <Panel header={props.free ? "Available for parking!" : "Taken by: " + person.name} bsStyle={props.free ? "primary" : "danger"}>
             <Row>
                 <Col md={12} className="text-center parking-space" >
                     <Row>
@@ -97,8 +97,17 @@ const doubleSpace = (props) => {
 };
 
 const Elevator = (props) => {
+    const panelStyle = (lowerSpace, upperSpace) => {
+        if (!lowerSpace.free && !upperSpace.free) {
+            return "danger";
+        } else if (!upperSpace.free || !lowerSpace.free ) {
+            return "warning";
+        }
+        return "success";
+    }
+
     return(
-        <CustomPanel header={"Elevator #" + props.parkingSpaceNumber} bsStyle="primary">
+        <CustomPanel header={"Elevator #" + props.parkingSpaceNumber} bsStyle={panelStyle(props.lowerSpace, props.upperSpace)}>
             {
                 props.upperSpace.free ?
                 singleSpace(props) :
