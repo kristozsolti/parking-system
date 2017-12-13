@@ -5,7 +5,8 @@ const ParkingSpace = (props) => {
     const {
         takeParkingSpace, 
         leaveParkingSpace,
-        elevatorNumber
+        elevatorNumber,
+        person
     } = props;
     return(
         <Row>
@@ -18,6 +19,11 @@ const ParkingSpace = (props) => {
                                 :
                                 (<Image src="http://icons.iconarchive.com/icons/icons-land/vista-elements/256/Cancel-2-icon.png" alt="parking space photo" width="25%" circle />)                            
                         }
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={12}>
+                        <h3><Label bsStyle="primary">{person.name}</Label></h3>
                     </Col>
                 </Row>
                 <Row>
@@ -50,10 +56,11 @@ const singleSpace = (props) => {
     return(
         <Row>
             <Col md={12}>
-                <ParkingSpace free={props.upFree}
+                <ParkingSpace free={props.upperSpace.free}
                     takeParkingSpace={props.takeParkingSpace}
                     leaveParkingSpace={props.leaveParkingSpace}
-                    elevatorNumber={props.id}/>
+                    elevatorNumber={props.id}
+                    person={props.upperSpace.person}/>
             </Col>
         </Row>
     );
@@ -63,21 +70,23 @@ const doubleSpace = (props) => {
     return(
         <Row>
             <Col md={12}>
-                <ParkingSpace free={props.upFree}
+                <ParkingSpace free={props.upperSpace.free}
                     takeParkingSpace={props.takeParkingSpace}
                     leaveParkingSpace={props.leaveParkingSpace}
                     elevatorNumber={props.id}
-                    upperElevator={true}/>
+                    upperElevator={true}
+                    person={props.upperSpace.person}/>
             </Col>
             <Col md={12}>
                 <hr />
             </Col>
             <Col md={12}>
-                <ParkingSpace free={props.downFree}
+                <ParkingSpace free={props.lowerSpace.free}
                     takeParkingSpace={props.takeParkingSpace}
                     leaveParkingSpace={props.leaveParkingSpace}
                     elevatorNumber={props.id}
-                    upperElevator={false}/>
+                    upperElevator={false}
+                    person={props.lowerSpace.person}/>
             </Col>
         </Row>
     );
@@ -92,7 +101,7 @@ const Elevator = (props) => {
                 </Col>
             </Row>
             {
-                props.upFree ?
+                props.upperSpace.free ?
                 singleSpace(props) :
                 doubleSpace(props)
             }

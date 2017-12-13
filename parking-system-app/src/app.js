@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
+// import _ from 'lodash';
 import { Elevator } from './components/garage';
 import { Grid, Col } from 'react-bootstrap';
 
@@ -18,8 +19,23 @@ class App extends Component {
         for(let i=0; i<numberOfElevators; i++){
             newParkingSpaces = newParkingSpaces.concat({
                 id: i+1,
-                upFree: true,
-                downFree: true
+                upperSpace: {
+                    free: true,
+                    person: {
+                        name: "",
+                        email: "",
+                        puctureUrl: ""
+                    }
+                },
+                lowerSpace: {
+                    free: true,
+                    person: {
+                        name: "",
+                        email: "",
+                        puctureUrl: ""
+                    }
+                }
+                
             });
         }
         this.setState({parkingSpaces: newParkingSpaces});
@@ -33,32 +49,65 @@ class App extends Component {
     takeParkingSpace(elevatorNumber) {
         const elevatorIndex = elevatorNumber-1;
         const currentStateOfParkings = this.state.parkingSpaces;
-        const newStateOfParkings =  currentStateOfParkings[elevatorIndex].upFree ? 
-                                    update(currentStateOfParkings, {[elevatorIndex]: {upFree: {$set: false}}}) :
-                                    update(currentStateOfParkings, {[elevatorIndex]: {downFree: {$set: false}}});
+        const newStateOfParkings =  currentStateOfParkings[elevatorIndex].upperSpace.free ? 
+                                    update(currentStateOfParkings, {[elevatorIndex]: {upperSpace: {
+                                        free: {$set: false},
+                                        person: {name:{$set: "Mr. AAA Aaa"}}
+                                    }}}) :
+                                    update(currentStateOfParkings, {[elevatorIndex]: {lowerSpace: {
+                                        free: {$set: false},
+                                        person: {name:{$set: "Mr. BBB Bbb"}}
+                                    }}});
 
         this.setState({parkingSpaces: newStateOfParkings});
     }
 
-    leaveParkingSpace(elevatorNumber, upperElevator) {
-        console.log('leave elevator #' + elevatorNumber + '. Upper ? -> ' + upperElevator)
-        // const elevatorIndex = elevatorNumber - 1;
-        // const currentStateOfParkings = this.state.parkingSpaces;
-        // const newStateOfParkings =  currentStateOfParkings[elevatorIndex].downFree ? 
-        //                             update(currentStateOfParkings, {[elevatorIndex]: {
-        //                                 downFree: {$set: true},
-        //                                 upFree: {$set: false}
-        //                             }}) :
-        //                             update(currentStateOfParkings, {[elevatorIndex]: {upFree: {$set: true}}});
+    leaveParkingSpace(elevatorNumber, upperElevator) {        
+        const elevatorIndex = elevatorNumber - 1;
+        const currentStateOfParkings = this.state.parkingSpaces;
+        let newStateOfParkings;
 
-        // this.setState({parkingSpaces: newStateOfParkings});
+        if (upperElevator) {
+            newStateOfParkings =  update(currentStateOfParkings, {[elevatorIndex]: {
+                upperSpace:{
+                    free: {$set: false},
+                    person: {$set: currentStateOfParkings[elevatorIndex].lowerSpace.person}
+                },
+                lowerSpace: {
+                    free: {$set: true},
+                    person: {$set: ""}
+                }
+            }})
+        } else if (!upperElevator) {
+            newStateOfParkings =  update(currentStateOfParkings, {[elevatorIndex]: {
+                upperSpace:{
+                    free: {$set: false},
+                    person: {$set: ""}
+                },
+                lowerSpace: {
+                    free: {$set: true},
+                    person: {$set: ""}
+                }
+            }});
+        } 
+        if (upperElevator && currentStateOfParkings[elevatorIndex].lowerSpace.free) {
+            newStateOfParkings =  update(currentStateOfParkings, {[elevatorIndex]: {
+                upperSpace:{
+                    free: {$set: true},
+                    person: {$set: ""}
+                }
+            }});
+        }
+
+        this.setState({parkingSpaces: newStateOfParkings});
     }
 
     render(){
         const { parkingSpaces } = this.state;
         return(
             <Grid>
-                { parkingSpaces.map( (parkingSpace, index) => {
+                { 
+                parkingSpaces.map( (parkingSpace, index) => {
                     return(
                         <Col md={4} key={index}>
                             <Elevator key={parkingSpace.id} 
@@ -69,7 +118,8 @@ class App extends Component {
                             />
                         </Col>
                     );
-                }) }
+                }) 
+                }
             </Grid> 
         );
     }
