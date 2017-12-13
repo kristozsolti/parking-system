@@ -3,6 +3,7 @@ import update from 'immutability-helper';
 // import _ from 'lodash';
 import { Elevator } from './components/garage';
 import { Grid, Col } from 'react-bootstrap';
+import CustomPanel from './components/customPanel';
 
 class App extends Component {
     constructor() {
@@ -136,22 +137,24 @@ class App extends Component {
     render(){
         const { parkingSpaces } = this.state;
         return(
-            <Grid>
-                { 
-                parkingSpaces.map( (parkingSpace, index) => {
-                    return(
-                        <Col md={4} key={index}>
-                            <Elevator key={parkingSpace.id} 
-                                parkingSpaceNumber={parkingSpace.id} 
-                                {...parkingSpace}
-                                takeParkingSpace={this.takeParkingSpace}
-                                leaveParkingSpace={this.leaveParkingSpace}
-                            />
-                        </Col>
-                    );
-                }) 
-                }
-            </Grid> 
+            <CustomPanel header={"Parking System"}>
+                <Grid>
+                    { 
+                    parkingSpaces.map( (parkingSpace, index) => {
+                        return(
+                            <Col md={4} key={index}>
+                                <Elevator key={parkingSpace.id} 
+                                    parkingSpaceNumber={parkingSpace.id} 
+                                    {...parkingSpace}
+                                    takeParkingSpace={this.takeParkingSpace}
+                                    leaveParkingSpace={this.leaveParkingSpace}
+                                />
+                            </Col>
+                        );
+                    }) 
+                    }
+                </Grid> 
+            </CustomPanel>
         );
     }
 };

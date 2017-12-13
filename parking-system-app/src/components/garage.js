@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Image, Label, Button, Glyphicon, Panel } from 'react-bootstrap';
+import CustomPanel from './customPanel';
 
 const ParkingSpace = (props) => {
     const {
@@ -9,7 +10,7 @@ const ParkingSpace = (props) => {
         person
     } = props;
     return(
-        <Panel>
+        <Panel header={props.free ? "Available for parking!" : "Taken by: " + person.name} bsStyle={props.free ? "success" : "danger"}>
             <Row>
                 <Col md={12} className="text-center parking-space" >
                     <Row>
@@ -97,13 +98,13 @@ const doubleSpace = (props) => {
 
 const Elevator = (props) => {
     return(
-        <Panel header={"Elevator #" + props.parkingSpaceNumber} bsStyle="primary">
+        <CustomPanel header={"Elevator #" + props.parkingSpaceNumber} bsStyle="primary">
             {
                 props.upperSpace.free ?
                 singleSpace(props) :
                 doubleSpace(props)
             }
-        </Panel>
+        </CustomPanel>
     );
 }
 export { Elevator };
