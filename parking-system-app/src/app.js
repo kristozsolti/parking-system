@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import update from 'immutability-helper';
-// import _ from 'lodash';
+import _ from 'lodash';
 import { Elevator } from './components/garage';
 import { Grid, Col, Row } from 'react-bootstrap';
 import CustomPanel from './components/customPanel';
@@ -51,21 +51,11 @@ class App extends Component {
                 id: i+1,
                 upperSpace: {
                     free: true,
-                    person: {
-                        id: "",
-                        name: "",
-                        email: "",
-                        puctureUrl: ""
-                    }
+                    person: {}
                 },
                 lowerSpace: {
                     free: true,
-                    person: {
-                        id: "",
-                        name: "",
-                        email: "",
-                        puctureUrl: ""
-                    }
+                    person: {}
                 }
                 
             });
@@ -97,9 +87,12 @@ class App extends Component {
                     email: fbResponse.email,
                     pictureUrl: fbResponse.picture.data.url
                 };
-            this.setState({loggedInPerson: personFbData});
+            this.setState({
+                examplePersons: this.state.examplePersons.concat(personFbData),
+                loggedInPerson: personFbData
+            });
         }
-        console.log(this.state.loggedInPerson)
+        //console.log(this.state.loggedInPerson)
     }
 
     takeParkingSpace = (elevatorNumber) => {
@@ -162,8 +155,33 @@ class App extends Component {
         this.setState({parkingSpaces: newStateOfParkings});
     }
 
+    renderScreen = () => {
+        //Splitting the main array in every third element so can be rendered every three element in a separate Row
+        const noOfElevatorsInARow = 4;
+        const parkingSpaces = this.state.parkingSpaces;
+        const elevators = parkingSpaces.map( (parkingSpace, index) => {
+            return(
+                <Col md={(12 / noOfElevatorsInARow)} key={index}>
+                    <Elevator key={parkingSpace.id} 
+                        parkingSpaceNumber={parkingSpace.id} 
+                        {...parkingSpace}
+                        takeParkingSpace={this.takeParkingSpace}
+                        leaveParkingSpace={this.leaveParkingSpace}
+                        getPersonFbData={this.getPersonFbData}
+                    />
+                </Col>
+            );
+        });
+        const elevatorsSplit = _.chunk(elevators, noOfElevatorsInARow);
+        const elevatorsByRow = elevatorsSplit.map( (row, i) => {
+            return <Row key={i}>{row}</Row>;
+        });
+
+       return elevatorsByRow.map( row => {return row;});
+        
+    }
+
     render(){
-        const { parkingSpaces } = this.state;
         const loginContent = (
             <Row>
                 <Col md={12}>
@@ -175,23 +193,9 @@ class App extends Component {
             <CustomPanel header={"Parking System"} bsStyle="primary">
                 <Grid>
                     {
-                    !this.state.loggedInPerson
-                    ?
-                    loginContent 
-                    :
-                    parkingSpaces.map( (parkingSpace, index) => {
-                        return(
-                            <Col md={4} key={index}>
-                                <Elevator key={parkingSpace.id} 
-                                    parkingSpaceNumber={parkingSpace.id} 
-                                    {...parkingSpace}
-                                    takeParkingSpace={this.takeParkingSpace}
-                                    leaveParkingSpace={this.leaveParkingSpace}
-                                    getPersonFbData={this.getPersonFbData}
-                                />
-                            </Col>
-                        );
-                    }) 
+                    (!this.state.loggedInPerson) ?
+                        loginContent             :
+                        this.renderScreen()
                     }
                 </Grid> 
             </CustomPanel>

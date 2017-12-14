@@ -5,7 +5,7 @@ const FbLogin = (props) => {
     return(
         <FacebookLogin
             appId="1366238783499175"
-            autoLoad={false}
+            autoLoad={true}
             fields="name,email,picture"
             callback={props.getPersonFbData}
             cssClass="btn btn-primary"
