@@ -65,12 +65,12 @@ class App extends Component {
 
     //Renders 9 elevators
     componentWillMount() {
-        this.setInitialStatus(9);
+        this.setInitialStatus(12);
     }
 
     // Returns imaginary person for testing purposes
     getFakePersonData = () => {
-        const randomNumber = Math.floor(Math.random() * 5);
+        const randomNumber = Math.floor(Math.random() * 6);
         return(
             this.state.examplePersons[randomNumber]
         );
@@ -106,11 +106,11 @@ class App extends Component {
         const newStateOfParkings =  currentStateOfParkings[elevatorIndex].upperSpace.free ? 
                                     update(currentStateOfParkings, {[elevatorIndex]: {upperSpace: {
                                         free: {$set: false},
-                                        person: {$set: this.state.loggedInPerson}
+                                        person: {$set: this.getFakePersonData()}//this.state.loggedInPerson}
                                     }}}) :
                                     update(currentStateOfParkings, {[elevatorIndex]: {lowerSpace: {
                                         free: {$set: false},
-                                        person: {$set: this.state.loggedInPerson}
+                                        person: {$set: this.getFakePersonData()}//this.state.loggedInPerson}
                                     }}});
 
         this.setState({parkingSpaces: newStateOfParkings});
@@ -174,7 +174,9 @@ class App extends Component {
         });
         const elevatorsSplit = _.chunk(elevators, noOfElevatorsInARow);
         const elevatorsByRow = elevatorsSplit.map( (row, i) => {
-            return <Row key={i}>{row}</Row>;
+            return  <CustomPanel key={i} header={"Elevator Group (" + ((noOfElevatorsInARow * (i + 1) - noOfElevatorsInARow) + 1) + " - " + (noOfElevatorsInARow * (i + 1)) + ")"} >
+                        {row}
+                    </CustomPanel>;
         });
 
        return elevatorsByRow.map( row => {return row;});

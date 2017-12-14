@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Panel, Glyphicon, Row, Col } from 'react-bootstrap';
+import { Panel, Glyphicon } from 'react-bootstrap';
 
 class CustomPanel extends Component {
     constructor() {
@@ -16,14 +16,10 @@ class CustomPanel extends Component {
             bsStyle
         } = this.props;
 
-        const title =   <Row onClick={() => this.setState({ open: !this.state.open })}>
-                            <Col md={10}>
-                                {header}
-                            </Col>
-                            <Col md={2}>
-                                <Glyphicon glyph={this.state.open ? "menu-down" : "menu-left"} className="pull-right"/>
-                            </Col>
-                        </Row>;
+        const title =   <div onClick={() => this.setState({ open: !this.state.open })}>
+                            {header}
+                            <Glyphicon glyph={this.state.open ? "menu-down" : "menu-left"} className="pull-right"/>
+                        </div>;
         return (
             <Panel collapsible expanded={this.state.open} header={title} bsStyle={bsStyle}>
                 {children}
