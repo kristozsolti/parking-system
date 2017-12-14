@@ -87,12 +87,15 @@ class App extends Component {
                     email: fbResponse.email,
                     pictureUrl: fbResponse.picture.data.url
                 };
+
+            localStorage.setItem("MyFbData", JSON.stringify(personFbData));
+
             this.setState({
                 examplePersons: this.state.examplePersons.concat(personFbData),
                 loggedInPerson: personFbData
             });
         }
-        //console.log(this.state.loggedInPerson)
+        //console.log(JSON.parse(localStorage.getItem("MyFbData")))
     }
 
     takeParkingSpace = (elevatorNumber) => {
@@ -106,14 +109,20 @@ class App extends Component {
         const newStateOfParkings =  currentStateOfParkings[elevatorIndex].upperSpace.free ? 
                                     update(currentStateOfParkings, {[elevatorIndex]: {upperSpace: {
                                         free: {$set: false},
-                                        person: {$set: this.getFakePersonData()}//this.state.loggedInPerson}
+                                        person: {$set: this.state.loggedInPerson} //this.getFakePersonData()}
                                     }}}) :
                                     update(currentStateOfParkings, {[elevatorIndex]: {lowerSpace: {
                                         free: {$set: false},
-                                        person: {$set: this.getFakePersonData()}//this.state.loggedInPerson}
+                                        person: {$set: this.state.loggedInPerson} //this.getFakePersonData()}
                                     }}});
 
         this.setState({parkingSpaces: newStateOfParkings});
+        this.disableParkHereButtons(elevatorNumber);
+    }
+
+    disableParkHereButtons = (elevatorNumber) => {
+        console.log('disable button ' + elevatorNumber)
+
     }
 
     leaveParkingSpace = (elevatorNumber, upperElevator) => {        
@@ -168,6 +177,7 @@ class App extends Component {
                         takeParkingSpace={this.takeParkingSpace}
                         leaveParkingSpace={this.leaveParkingSpace}
                         getPersonFbData={this.getPersonFbData}
+                        loggedInPerson={JSON.parse(localStorage.getItem("MyFbData")).id}
                     />
                 </Col>
             );
