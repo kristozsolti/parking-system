@@ -7,8 +7,11 @@ const ParkingSpace = (props) => {
         takeParkingSpace, 
         leaveParkingSpace,
         elevatorNumber,
-        person
+        person,
+        disableParkHereButtons,
+        loggedInPerson
     } = props;
+    const parked = JSON.parse(localStorage.getItem("AmIParked"));
 
     return(
         <Panel header={props.free ? "Available for parking!" : "Taken by: " + person.name} bsStyle={props.free ? "primary" : "danger"}>
@@ -35,16 +38,18 @@ const ParkingSpace = (props) => {
                             {
                             (props.free) ?
                                 <div>
-                                    <Button bsStyle="success" 
-                                        onClick={() => takeParkingSpace(elevatorNumber)}>
+                                    <Button bsStyle="success" disabled={parked}
+                                        onClick={() => {
+                                            takeParkingSpace(elevatorNumber);
+                                        }}>
                                         Park here! <Glyphicon glyph="log-in" />
                                     </Button>
                                 </div>
                                 :
                                 <Button bsStyle="danger" 
                                     onClick={
-                                        props.upperElevator ?
-                                        () => leaveParkingSpace(elevatorNumber, true) :
+                                        props.upperElevator                             ?
+                                        () => leaveParkingSpace(elevatorNumber, true)   :
                                         () => leaveParkingSpace(elevatorNumber, false)
                                         }>
                                     Leave Parking Space! <Glyphicon glyph="log-out" />
@@ -68,7 +73,9 @@ const singleSpace = (props) => {
                     leaveParkingSpace={props.leaveParkingSpace}
                     elevatorNumber={props.id}
                     person={props.upperSpace.person}
-                    getPersonFbData={props.getPersonFbData}/>
+                    getPersonFbData={props.getPersonFbData}
+                    loggedInPerson={props.loggedInPerson}
+                    disableParkHereButtons={props.disableParkHereButtons}/>
             </Col>
         </Row>
     );
@@ -84,7 +91,9 @@ const doubleSpace = (props) => {
                     elevatorNumber={props.id}
                     upperElevator={true}
                     person={props.upperSpace.person}
-                    getPersonFbData={props.getPersonFbData}/>
+                    getPersonFbData={props.getPersonFbData}
+                    loggedInPerson={props.loggedInPerson}
+                    disableParkHereButtons={props.disableParkHereButtons}/>
             </Col>
             <Col md={12}>
                 <hr />
@@ -96,7 +105,9 @@ const doubleSpace = (props) => {
                     elevatorNumber={props.id}
                     upperElevator={false}
                     person={props.lowerSpace.person}
-                    getPersonFbData={props.getPersonFbData}/>
+                    getPersonFbData={props.getPersonFbData}
+                    loggedInPerson={props.loggedInPerson}
+                    disableParkHereButtons={props.disableParkHereButtons}/>
             </Col>
         </Row>
     );
@@ -115,8 +126,8 @@ const Elevator = (props) => {
     return(
         <CustomPanel header={"Elevator #" + props.parkingSpaceNumber} bsStyle={panelStyle(props.lowerSpace, props.upperSpace)}>
             {
-                props.upperSpace.free ?
-                singleSpace(props) :
+                // props.upperSpace.free ?
+                // singleSpace(props) :
                 doubleSpace(props)
             }
         </CustomPanel>

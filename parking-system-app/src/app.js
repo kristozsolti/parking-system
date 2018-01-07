@@ -117,12 +117,7 @@ class App extends Component {
                                     }}});
 
         this.setState({parkingSpaces: newStateOfParkings});
-        this.disableParkHereButtons(elevatorNumber);
-    }
-
-    disableParkHereButtons = (elevatorNumber) => {
-        console.log('disable button ' + elevatorNumber)
-
+        localStorage.setItem("AmIParked", true);
     }
 
     leaveParkingSpace = (elevatorNumber, upperElevator) => {        
@@ -162,6 +157,7 @@ class App extends Component {
         }
 
         this.setState({parkingSpaces: newStateOfParkings});
+        localStorage.setItem("AmIParked", false);
     }
 
     renderScreen = () => {
